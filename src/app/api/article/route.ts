@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export async function GET() {
+  return NextResponse.json({
+    method: "GET",
+    message: "gvg",
+  });
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  console.log(body);
-
   return NextResponse.json({
     method: "POST",
-    message: "created",
+    message: "fff",
     body,
   });
 }
