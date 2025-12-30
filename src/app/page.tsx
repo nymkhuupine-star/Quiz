@@ -1,21 +1,21 @@
-"use client";
+import { SignedIn, SignedOut, SignIn} from "@clerk/nextjs";
 
-import { useEffect } from "react";
+export default function Home() {
+  return (
+    <main className="min-h-screen flex items-center justify-center">
+      <SignedOut>
+        <SignIn 
+          appearance={{
+            elements: {
+              rootBox: "mx-auto",
+            }
+          }}
+        />
+      </SignedOut>
 
-const Home = () => {
-  const getData = async () => {
-    try {
-      const data = await fetch("/api/article");
-      console.log(data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    void getData();
-  }, []);
-
-  return <div> hii </div>;
-};
-export default Home;
+      <SignedIn>
+        <div className="text-2xl font-bold">Dashboard маань энд байна</div>
+      </SignedIn>
+    </main>
+  );
+}
