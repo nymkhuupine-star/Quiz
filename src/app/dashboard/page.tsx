@@ -1,11 +1,211 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import ArticleGenerator from "../components/ArticleGenerator";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
+import { SparklesCore } from '@/components/ui/sparkles';
+import ChatLayout from '../components/chatComponents/ChatLayout';
+import { MessageCircle } from "lucide-react";
+import ChatModal from '../components/chatComponents/ChatModal';
+
+// Article type
+type Article = {
+  id: string;
+  title: string;
+  content: string;
+  summary: string;
+  createdAt: string;
+};
+
+// Colorful sparkles for dark mode
+function ColorfulSparklesOverlay() {
+  const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
+  
+  return (
+    <>
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(10px, -10px); }
+          50% { transform: translate(-5px, 5px); }
+          75% { transform: translate(-10px, -5px); }
+        }
+        
+        @keyframes glow {
+          0%, 100% { opacity: 0.4; filter: blur(2px); }
+          50% { opacity: 1; filter: blur(4px); }
+        }
+      `}</style>
+      {Array.from({ length: 80 }).map((_, i) => {
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomX = Math.random() * 100;
+        const randomY = Math.random() * 100;
+        const randomSize = Math.random() * 4 + 2;
+        const randomDelay = Math.random() * 3;
+        const randomDuration = Math.random() * 4 + 3;
+        
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full pointer-events-none"
+            style={{
+              left: `${randomX}%`,
+              top: `${randomY}%`,
+              width: `${randomSize}px`,
+              height: `${randomSize}px`,
+              backgroundColor: randomColor,
+              boxShadow: `0 0 ${randomSize * 4}px ${randomColor}, 0 0 ${randomSize * 8}px ${randomColor}`,
+              animation: `float ${randomDuration}s ease-in-out infinite, glow ${randomDuration * 0.8}s ease-in-out infinite`,
+              animationDelay: `${randomDelay}s`,
+            }}
+          />
+        );
+      })}
+    </>
+  );
+}
 
 export default function DashboardPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
+  const [isDark, setIsDark] = useState(false);
+    const [openChat, setOpenChat] = useState(false);
+
+
+
+  // Dark mode шалгах
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
+  // Эхлэхэд localStorage-аас нийтлэлүүдийг ачаалах
+  useEffect(() => {
+    const stored = localStorage.getItem("articles");
+    if (stored) {
+      try {
+        const parsedArticles = JSON.parse(stored);
+        setArticles(parsedArticles);
+      } catch (error) {
+        console.error("localStorage-аас уншихад алдаа гарлаа:", error);
+        setArticles([]);
+      }
+    }
+  }, []);
+
+  // Шинэ нийтлэл үүсгэгдсэний дараа sidebar-г шинэчлэх
+  const handleArticleCreated = () => {
+    const stored = localStorage.getItem("articles");
+    if (stored) {
+      try {
+        setArticles(JSON.parse(stored));
+      } catch (error) {
+        console.error("Articles шинэчлэхэд алдаа гарлаа:", error);
+      }
+    }
+  };
+
+  // Sidebar дээрх нийтлэл дээр дарахад
+  const handleSelectArticle = (articleId: string) => {
+    setSelectedArticleId(articleId);
+    console.log("Сонгогдсон нийтлэл:", articleId);
+  };
+
+  // Нийтлэл устгах
+  const handleDeleteArticle = (articleId: string) => {
+    const updatedArticles = articles.filter(a => a.id !== articleId);
+    localStorage.setItem("articles", JSON.stringify(updatedArticles));
+    setArticles(updatedArticles);
+
+    // Хэрэв устгасан нийтлэл сонгогдсон бол цэвэрлэх
+    if (selectedArticleId === articleId) {
+      setSelectedArticleId(null);
+    }
+
+    console.log("Нийтлэл устгагдлаа:", articleId);
+  };
+
   return (
-    <div>
-      <Header />
-      <Sidebar />
+   <div className="relative min-h-screen bg-neutral-100 dark:bg-gray-900 overflow-hidden transition-colors">
+    {/* 🌟 Sparkles background */}
+    <div className="absolute inset-0 z-0">
+      {isDark ? (
+        // Dark mode: Харанхуй background + цагаан SparklesCore + өнгөт overlay
+        <>
+          <div className="absolute inset-0 bg-gray-900" />
+          <SparklesCore
+            background="transparent"
+            particleColor="#FFFFFF"
+            minSize={1}
+            maxSize={3}
+            particleDensity={80}
+            speed={1.5}
+            className="absolute inset-0"
+          />
+          <ColorfulSparklesOverlay />
+        </>
+      ) : (
+        // Light mode: Саарал background дээр хар цэгүүд
+        <SparklesCore
+          background="transparent"
+          particleColor="#374151"
+          minSize={1}
+          maxSize={2}
+          particleDensity={120}
+          speed={1}
+          className="absolute inset-0"
+        />
+      )}
+    </div>
+      
+      {/* 🔝 Бүх UI контент */}
+      <div className="relative z-10">
+        <Header />
+
+        <div className="flex flex-row pt-[56px]">
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+            onOpen={() => setIsSidebarOpen(true)}
+            articles={articles}
+            selectedArticleId={selectedArticleId}
+            onSelectArticle={handleSelectArticle}
+            onDeleteArticle={handleDeleteArticle}
+          />
+
+          <div className="flex-1 flex items-center justify-center min-h-[calc(100vh-56px)] py-[100px]">
+            <ArticleGenerator
+              hasSidebar={isSidebarOpen}
+              onArticleCreated={handleArticleCreated}
+              selectedArticleId={selectedArticleId}
+            />
+          </div>
+          {/* Messenger Icon */}
+        <button
+          onClick={() => setOpenChat(true)}
+          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gray-500 text-white flex items-center justify-center shadow-lg hover:bg-gray-700"
+        >
+          <MessageCircle size={24} />
+        </button>
+      
+
+      {/* Chat Dialog */}
+      {openChat && <ChatModal onClose={() => setOpenChat(false)} />}
+        </div>
+      </div>
     </div>
   );
 }
