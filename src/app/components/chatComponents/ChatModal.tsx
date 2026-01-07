@@ -12,7 +12,7 @@ export default function ChatModal({ onClose }: { onClose: () => void }) {
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end pr-10">
+    <div className="fixed inset-0 z-50 flex justify-end items-center pr-10">
       <div
         onClick={onClose}
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"

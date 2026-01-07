@@ -1,24 +1,3 @@
-// import { SignedIn, SignedOut, SignIn } from "@clerk/nextjs";
-// import { redirect } from "next/navigation";
-
-// export default function Home() {
-//   return (
-//     <main className="min-h-screen flex items-center justify-center">
-//       <SignedOut>
-//         <SignIn
-//           forceRedirectUrl="/dashboard"
-//           appearance={{
-//             elements: {
-//               rootBox: "mx-auto",
-//             },
-//           }}
-//         />
-//       </SignedOut>
-
-//       <SignedIn>{redirect("/dashboard")}</SignedIn>
-//     </main>
-//   );
-// }
 
 import { SignIn } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";

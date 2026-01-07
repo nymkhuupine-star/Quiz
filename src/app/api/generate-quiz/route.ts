@@ -28,25 +28,27 @@ export async function POST(req: Request) {
       messages: [
         {
           role: "system",
-          content: `Та quiz асуулт үүсгэгч юм. Өгөгдсөн текстээс 5 асуулт үүсгэнэ үү. 
+          content: `You are a quiz generator. Create 5 questions from the given text IN THE SAME LANGUAGE AS THE TEXT.
           
-МАШ ЧУХАЛ: Хариугаа яг энэ JSON форматаар буцаа, өөр юу ч бүү нэм:
+CRITICAL: If the text is in English, create questions in English. If the text is in Mongolian, create questions in Mongolian. DO NOT translate.
+
+Return ONLY this JSON format, nothing else:
 
 {
   "questions": [
     {
-      "question": "Асуултын текст?",
-      "options": ["A сонголт", "B сонголт", "C сонголт", "D сонголт"],
+      "question": "Question text?",
+      "options": ["Option A", "Option B", "Option C", "Option D"],
       "correctAnswer": 0
     }
   ]
 }
 
-correctAnswer нь зөв хариултын индекс (0, 1, 2, эсвэл 3) байна.`
+correctAnswer is the index (0, 1, 2, or 3) of the correct option.`
         },
         {
           role: "user",
-          content: `Гарчиг: ${title}\n\nТекст:\n${text}\n\nЭнэ текстээс 5 quiz асуулт үүсгэж өгнө үү. Асуултууд нь текстийн агуулгатай холбоотой, ойлгомжтой байх ёстой.`
+          content: `Title: ${title}\n\nText:\n${text}\n\nCreate 5 quiz questions from this text IN THE SAME LANGUAGE AS THE TEXT. Questions must be clear and relevant to the content.`
         }
       ],
       model: "llama-3.3-70b-versatile",

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    // API Key шалгах
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       console.error("❌ GROQ API Key байхгүй байна!");
@@ -13,7 +12,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Текст авах
     const { text } = await req.json();
     
     if (!text || !text.trim()) {
@@ -23,28 +21,30 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("✅ API Key олдлоо");
     console.log("✅ Текст олдлоо, урт:", text.length);
     console.log("🔄 Groq API руу хүсэлт илгээж байна...");
 
-    // Groq client үүсгэх
     const groq = new Groq({ apiKey });
 
-    // AI-г дуудах
     const chatCompletion = await groq.chat.completions.create({
       messages: [
         {
           role: "system",
-          content: "Та мэргэжлийн хураангуйлагч юм. Текстийг ойлгомжтой, товч Монгол хэлээр хураангуйл. Зөвхөн хураангуйг л бич, өөр юу ч бүү нэм."
+          content: "You are a professional summarizer. Detect the language of the text and summarize it IN THE SAME LANGUAGE. If the text is in English, summarize in English. If the text is in Mongolian, summarize in Mongolian. DO NOT translate. Only provide the summary, nothing else. Write naturally and correctly."
         },
         {
           role: "user",
-          content: `Дараах текстийг Монгол хэлээр хураангуйл:\n\n${text}`
+          content: `Summarize the following text in its original language:\n\n${text}`
         }
       ],
-      model: "llama-3.3-70b-versatile", // Хамгийн сайн загвар
-      temperature: 0.3, // Бага = илүү тодорхой
+      // Одоогийн идэвхтэй моделиуд:
+      model: "llama-3.3-70b-versatile", // Эсвэл доорх моделиудыг турш
+      // model: "llama-3.1-8b-instant",
+      // model: "mixtral-8x7b-32768",
+      // model: "gemma2-9b-it",
+      temperature: 0.5,
       max_tokens: 1024,
+      top_p: 0.9,
     });
 
     const summary = chatCompletion.choices[0]?.message?.content || "Хураангуй үүсгэж чадсангүй";
