@@ -107,8 +107,6 @@ export async function POST(req: Request) {
     } catch (error) {
       console.error("❌ Prisma update error:", error);
     }
-
-    // Update Supabase
     try {
       await supabase
         .from("users")
