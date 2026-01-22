@@ -55,13 +55,13 @@ export default function QuickTestView({ questions, onBack }: Props) {
     ).length;
   };
 
-  // ====== ҮР ДҮН ХАРУУЛАХ ======
+
  if (showResults) {
   const score = calculateScore();
 
   return (
     <div className="w-full max-w-2xl mx-auto flex flex-col">
-      {/* Header - Fixed */}
+  
       <div className="flex-shrink-0 mb-4">
         <h1 className="text-xl font-semibold flex items-center gap-2 text-gray-900 dark:text-white">
           ✨ Quiz completed
@@ -69,7 +69,6 @@ export default function QuickTestView({ questions, onBack }: Props) {
         <p className="text-sm text-gray-500 dark:text-gray-400">Let's see what you did</p>
       </div>
 
-      {/* Score - Fixed */}
       <div className="flex-shrink-0 mb-4">
         <h2 className="text-lg font-medium text-gray-900 dark:text-white">
           Your score:{" "}
@@ -80,7 +79,7 @@ export default function QuickTestView({ questions, onBack }: Props) {
         </h2>
       </div>
 
-      {/* Scrollable Result List */}
+     
       <div className="flex-1 overflow-y-auto mb-4 pr-2 max-h-[500px]">
         <div className="space-y-4">
           {questions.map((item, index) => {
@@ -89,21 +88,20 @@ export default function QuickTestView({ questions, onBack }: Props) {
 
             return (
               <div key={index} className="flex gap-3">
-                {/* Icon */}
+            
                 {isCorrect ? (
                   <CheckCircleIcon className="mt-1 text-green-500 dark:text-green-400 flex-shrink-0" />
                 ) : (
                   <XCircleIcon className="mt-1 text-red-500 dark:text-red-400 flex-shrink-0" />
                 )}
 
-                {/* Content */}
+             
                 <div className="text-sm flex-1">
-                  {/* Question */}
+               
                   <p className="font-medium text-gray-900 dark:text-white mb-1">
                     {index + 1}. {item.question}
                   </p>
 
-                  {/* Your answer */}
                   {userAnswer !== null && (
                     <p className="text-gray-600 dark:text-gray-400">
                       Your answer:{" "}
@@ -118,8 +116,6 @@ export default function QuickTestView({ questions, onBack }: Props) {
                       </span>
                     </p>
                   )}
-
-                  {/* Correct answer (only if wrong) */}
                   {!isCorrect && (
                     <p className="text-green-600 dark:text-green-400 mt-1">
                       Correct:{" "}
@@ -134,8 +130,6 @@ export default function QuickTestView({ questions, onBack }: Props) {
           })}
         </div>
       </div>
-
-      {/* Actions - Fixed at bottom */}
       <div className="flex-shrink-0 flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
         <button
           onClick={handleRestart}
@@ -157,13 +151,11 @@ export default function QuickTestView({ questions, onBack }: Props) {
   );
 }
 
-  // ====== АСУУЛТ ХАРУУЛАХ ======
   const currentQ = questions[currentQuestion];
   const selectedAnswer = selectedAnswers[currentQuestion];
 
   return (
     <div>
-      {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
@@ -182,18 +174,12 @@ export default function QuickTestView({ questions, onBack }: Props) {
           Back
         </button>
       </div>
-
-      {/* Progress */}
       <div className="flex justify-end text-sm text-gray-400 dark:text-gray-500 mb-4">
         {currentQuestion + 1} / {questions.length}
       </div>
-
-      {/* Question */}
       <h2 className="text-base font-medium text-gray-900 dark:text-white mb-4">
         {currentQ.question}
       </h2>
-
-      {/* Answers */}
       <div className="grid grid-cols-2 gap-3 mb-6">
         {currentQ.options.map((option, index) => (
           <button
@@ -209,8 +195,6 @@ export default function QuickTestView({ questions, onBack }: Props) {
           </button>
         ))}
       </div>
-
-      {/* Navigation */}
       <div className="flex justify-between gap-3">
         <button
           onClick={handlePrevious}

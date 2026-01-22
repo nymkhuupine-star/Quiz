@@ -5,11 +5,10 @@ import ArticleGenerator from "../components/ArticleGenerator";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { SparklesCore } from '@/components/ui/sparkles';
-import ChatLayout from '../components/chatComponents/ChatLayout';
 import { MessageCircle } from "lucide-react";
-import ChatModal from '../components/chatComponents/ChatModal';
 
-// Article type
+
+
 type Article = {
   id: string;
   title: string;
@@ -18,7 +17,6 @@ type Article = {
   createdAt: string;
 };
 
-// Colorful sparkles for dark mode
 function ColorfulSparklesOverlay() {
   const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2'];
   
@@ -75,7 +73,7 @@ export default function DashboardPage() {
 
 
 
-  // Dark mode шалгах
+
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDark(document.documentElement.classList.contains('dark'));
@@ -92,7 +90,6 @@ export default function DashboardPage() {
     return () => observer.disconnect();
   }, []);
 
-  // Эхлэхэд localStorage-аас нийтлэлүүдийг ачаалах
   useEffect(() => {
     const stored = localStorage.getItem("articles");
     if (stored) {
@@ -106,7 +103,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  // Шинэ нийтлэл үүсгэгдсэний дараа sidebar-г шинэчлэх
   const handleArticleCreated = () => {
     const stored = localStorage.getItem("articles");
     if (stored) {
@@ -118,19 +114,16 @@ export default function DashboardPage() {
     }
   };
 
-  // Sidebar дээрх нийтлэл дээр дарахад
   const handleSelectArticle = (articleId: string) => {
     setSelectedArticleId(articleId);
     console.log("Сонгогдсон нийтлэл:", articleId);
   };
 
-  // Нийтлэл устгах
   const handleDeleteArticle = (articleId: string) => {
     const updatedArticles = articles.filter(a => a.id !== articleId);
     localStorage.setItem("articles", JSON.stringify(updatedArticles));
     setArticles(updatedArticles);
 
-    // Хэрэв устгасан нийтлэл сонгогдсон бол цэвэрлэх
     if (selectedArticleId === articleId) {
       setSelectedArticleId(null);
     }
@@ -140,10 +133,9 @@ export default function DashboardPage() {
 
   return (
    <div className="relative min-h-screen bg-neutral-100 dark:bg-gray-900 overflow-hidden transition-colors">
-    {/* 🌟 Sparkles background */}
+
     <div className="absolute inset-0 z-0">
       {isDark ? (
-        // Dark mode: Харанхуй background + цагаан SparklesCore + өнгөт overlay
         <>
           <div className="absolute inset-0 bg-gray-900" />
           <SparklesCore
@@ -158,7 +150,6 @@ export default function DashboardPage() {
           <ColorfulSparklesOverlay />
         </>
       ) : (
-        // Light mode: Саарал background дээр хар цэгүүд
         <SparklesCore
           background="transparent"
           particleColor="#374151"
@@ -171,7 +162,6 @@ export default function DashboardPage() {
       )}
     </div>
       
-      {/* 🔝 Бүх UI контент */}
       <div className="relative z-10">
         <Header />
 
@@ -193,17 +183,12 @@ export default function DashboardPage() {
               selectedArticleId={selectedArticleId}
             />
           </div>
-          {/* Messenger Icon */}
         <button
           onClick={() => setOpenChat(true)}
           className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gray-500 text-white flex items-center justify-center shadow-lg hover:bg-gray-700"
         >
           <MessageCircle size={24} />
         </button>
-      
-
-      {/* Chat Dialog */}
-      {openChat && <ChatModal onClose={() => setOpenChat(false)} />}
         </div>
       </div>
     </div>

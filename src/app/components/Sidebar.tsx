@@ -33,8 +33,6 @@ export default function Sidebar({
   onDeleteArticle
 }: SidebarProps) {
   const [isDark, setIsDark] = useState(false);
-
-  // Dark mode шалгах useEffect нэмэх
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDark(document.documentElement.classList.contains('dark'));
@@ -69,7 +67,6 @@ export default function Sidebar({
 
   return (
     <>
-      {/* 1. Sidebar ХААЛТТАЙ ҮЕД харагдах нарийн хэсэг (72px) */}
       {!isOpen && (
         <div className="w-[72px] h-[calc(100vh-56px)] border-r border-r-[#E4E4E7] dark:border-r-gray-700 bg-white dark:bg-gray-800 fixed top-[56px] left-0 z-30 transition-colors">
           <button
@@ -80,15 +77,12 @@ export default function Sidebar({
           </button>
         </div>
       )}
-
-      {/* 2. Sidebar НЭЭЛТТЭЙ ҮЕД харагдах үндсэн хэсэг (256px) */}
       <div
         className={`fixed top-[56px] left-0 h-[calc(100vh-56px)] bg-[#f9f9f9] dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 w-64 transform transition-all duration-300 ease-in-out z-40 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
-          {/* Header хэсэг */}
           <div className="p-4 border-b border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between mb-2">
               <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">
@@ -105,8 +99,6 @@ export default function Sidebar({
               {articles.length} Article
             </p>
           </div>
-
-          {/* Нийтлэлүүдийн жагсаалт */}
           <div 
             className="flex-1 overflow-y-auto p-2"
             style={{
@@ -168,8 +160,6 @@ export default function Sidebar({
               </div>
             )}
           </div>
-
-          {/* Footer - Хэрэглэгчийн мэдээлэл */}
           <div className="border-t dark:border-gray-700 pt-4 p-4 flex items-center gap-3">
             <UserButton />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Миний бүртгэл</span>

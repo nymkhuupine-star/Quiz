@@ -33,12 +33,11 @@ export default function ArticleGenerator({
   const [error, setError] = useState("");
   const [currentArticleId, setCurrentArticleId] = useState<string | null>(null);
   
-  // Quiz state
+
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [loadingQuiz, setLoadingQuiz] = useState(false);
 
-  // Sidebar-аас сонгосон нийтлэлийг ачаалах
   useEffect(() => {
     if (selectedArticleId) {
       const articles = JSON.parse(localStorage.getItem("articles") || "[]");
@@ -77,7 +76,7 @@ export default function ArticleGenerator({
       console.log("✅ Хураангуй амжилттай үүслээ");
       setSummary(data.summary);
 
-      // localStorage-д хадгалах
+    
       const newArticle: Article = {
         id: currentArticleId || Date.now().toString(),
         title: title || "Гарчиггүй нийтлэл",
@@ -158,14 +157,14 @@ export default function ArticleGenerator({
     <div
       className={`${widthClass} rounded-lg border border-[#E4E4E7] dark:border-gray-700 bg-white dark:bg-gray-800 p-6 transition-all duration-300`}
     >
-      {/* ===== QUIZ VIEW ===== */}
+ 
       {showQuiz && quizQuestions.length > 0 ? (
         <QuickTestView
           questions={quizQuestions}
           onBack={handleBackToSummary}
         />
       ) : summary ? (
-        /* ===== SUMMARY RESULT ===== */
+     
         <div>
           <SummaryResult 
             title={title || "Гарчиггүй нийтлэл"} 
@@ -174,7 +173,7 @@ export default function ArticleGenerator({
             onTakeQuiz={handleTakeQuiz}
             loadingQuiz={loadingQuiz}
           />
-          {/* Шинэ нийтлэл үүсгэх товч */}
+    
           <button
             onClick={handleNewArticle}
             className="mt-4 rounded-md border border-neutral-300 dark:border-gray-600 px-4 py-2 text-sm font-medium text-gray-900 dark:text-white hover:bg-neutral-50 dark:hover:bg-gray-700 transition-colors"
@@ -183,9 +182,9 @@ export default function ArticleGenerator({
           </button>
         </div>
       ) : (
-        /* ===== FILL ARTICLE ===== */
+       
         <>
-          {/* Header */}
+       
           <div className="mb-6">
             <h2 className="flex items-center gap-2 text-lg font-semibold text-neutral-900 dark:text-white">
               <Sparkles className="h-5 w-5 text-neutral-900 dark:text-white" />
@@ -197,7 +196,7 @@ export default function ArticleGenerator({
             </p>
           </div>
 
-          {/* Article Title */}
+       
           <div className="mb-4">
             <label className="mb-1 flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-gray-300">
               <FileText className="h-4 w-4" />
@@ -212,7 +211,7 @@ export default function ArticleGenerator({
             />
           </div>
 
-          {/* Article Content */}
+         
           <div className="mb-6">
             <label className="mb-1 flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-gray-300">
               <FileText className="h-4 w-4" />
@@ -227,14 +226,14 @@ export default function ArticleGenerator({
             />
           </div>
 
-          {/* Error */}
+      
           {error && (
             <div className="mb-4 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-600 dark:text-red-400">
               {error}
             </div>
           )}
 
-          {/* Action */}
+         
           <div className="flex justify-end">
             <button
               onClick={handleSummarize}

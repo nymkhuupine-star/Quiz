@@ -222,8 +222,6 @@ export default function QuickTestCard({ questions, onClose }: Props) {
             </div>
           ))}
         </div>
-
-        {/* Navigation */}
         <div className="mt-6 flex justify-between gap-3">
           <button
             onClick={handlePrevious}
