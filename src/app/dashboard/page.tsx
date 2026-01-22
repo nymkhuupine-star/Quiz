@@ -183,12 +183,7 @@ export default function DashboardPage() {
               selectedArticleId={selectedArticleId}
             />
           </div>
-        <button
-          onClick={() => setOpenChat(true)}
-          className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-gray-500 text-white flex items-center justify-center shadow-lg hover:bg-gray-700"
-        >
-          <MessageCircle size={24} />
-        </button>
+       
         </div>
       </div>
     </div>
